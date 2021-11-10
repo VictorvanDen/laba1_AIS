@@ -78,11 +78,12 @@ namespace laba1_AIS
         private void button6_Click(object sender, EventArgs e)
         {
             List<int> list = massiv_in_begin.ToList();
-            QuickSort(list, 0, massiv_in_begin.Length);
-            printLab(label5, list.ToArray());
+            List<int> l = new List<int>();
+            l = QuickSort(list, 0, massiv_in_begin.Length);
+            printLab(label5, l.ToArray());
             
         }
-        public void QuickSort(List<int> list, int low, int high)//не работает и вам не советует (причина: потеря элемента списка где-то внутри алгоритма)
+        public List<int> QuickSort(List<int> list, int low, int high)//не работает и вам не советует (причина: потеря элемента списка где-то внутри алгоритма)
         {
             if(high - low > 1)
             {
@@ -120,23 +121,16 @@ namespace laba1_AIS
                 {
                     LowerT.Add(HigherT[i]);
                 }
-                for(int i = 0; i < list.Count(); i++)
-                {
-                    int y = list[i];
-                }
                 list = new List<int>();
                 for (int i = 0; i < LowerT.Count(); i++)
                 {
                     list.Add(LowerT[i]);
                 }
-                for (int i = 0; i < list.Count(); i++)
-                {
-                    int y1 = list[i];
-                }
                 QuickSort(list, low, t - 1);
                 QuickSort(list, t + 1, list.Count());
                 
             }
+            return list;
             /*if(low < high)
             {
                 int p = election(list, low, high);
@@ -208,7 +202,7 @@ namespace laba1_AIS
         public void printLab(Label Lab, int[] mass)
         {
             string q = "";
-            for (int i = 0; i < quantity; i++)
+            for (int i = 0; i < mass.Length; i++)
             {
                 q = q + " " + Convert.ToString(mass[i]);
             }
