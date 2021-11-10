@@ -170,7 +170,7 @@ namespace laba1_AIS
             int i = r.Next(l, h);
             return i;
         }
-        public void Swap(ref int element1, ref int element2)
+        public void Swap(ref int element1, ref int element2)//не работает для элементов списка (нано технология дала сбой)
         {
             int boof = element1;
             element1 = element2;
