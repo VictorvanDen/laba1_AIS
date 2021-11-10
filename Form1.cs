@@ -90,7 +90,7 @@ namespace laba1_AIS
                 int m = list.Count();
                 label6.Text = Convert.ToString(m);
                 Random r = new Random();
-                int t = r.Next(low, high);
+                int t = low;
                 List<int> LowerT = new List<int>();
                 List<int> HigherT = new List<int>();
                 int el;
