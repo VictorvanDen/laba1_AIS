@@ -19,9 +19,10 @@ namespace laba1_AIS
         {
             InitializeComponent();
         }
-        const int quantity = 5;
+        const int quantity = 100;
         int[] massiv_in_begin = new int[quantity];
         int[] massiv_in_begin1 = new int[quantity];
+        int[] massiv_in_begin2 = new int[quantity];
         private void button1_Click(object sender, EventArgs e)
         {
             string q = "";
@@ -81,7 +82,7 @@ namespace laba1_AIS
             List<int> l = new List<int>();
             l = QuickSort(list, 0, massiv_in_begin.Length);
             printLab(label5, l.ToArray());
-            
+            massiv_in_begin2 = l.ToArray();
         }
         public List<int> QuickSort(List<int> list, int low, int high)//не работает и вам не советует (причина: потеря элемента списка где-то внутри алгоритма)
         {
@@ -207,6 +208,32 @@ namespace laba1_AIS
                 q = q + " " + Convert.ToString(mass[i]);
             }
             Lab.Text = q;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            int r = 0;
+            int[,] res = new int[quantity,2];
+            int[] p = new int[quantity];
+            for (int i = 0; i < 1; i++)
+            {
+                p[i] = 0;
+                this.button1_Click(sender, e);
+                this.button6_Click(sender, e);
+                this.button4_Click(sender, e);
+                for(int k = 0; k < quantity; k++)
+                {
+                    res[i, 0] = massiv_in_begin1[i];
+                    res[i, 1] = massiv_in_begin2[i];
+                    if (res[i, 0] != res[i, 1])
+                    {
+                        r++;
+                        p[i]++;
+                    }
+                }
+            }
+            label8.Text = Convert.ToString(r);
+            printLab(label10, p);
         }
     }
 }
