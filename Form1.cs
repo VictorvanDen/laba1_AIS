@@ -105,7 +105,7 @@ namespace laba1_AIS
                     else 
                         HigherT.Add(el);
                 }
-                for (int i = t; i > low; i--)
+                /*for (int i = t; i > low; i--)
                 {
                     el = list[i];
                     if (list[t] > list[i])
@@ -115,11 +115,11 @@ namespace laba1_AIS
                     else if (list[t] == list[i]) ;
                     else
                         HigherT.Add(el);
-                }
+                }*/
                 //LowerT.Add(list[t]);
                 for (int i = 0; i < HigherT.Count(); i++)
                 {
-                    LowerT.Add(HigherT[i]);
+                    LowerT.Insert(0, HigherT[i]);
                 }
                 list = new List<int>();
                 for (int i = 0; i < LowerT.Count(); i++)
