@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 
 namespace laba1_AIS
 {
@@ -19,7 +19,7 @@ namespace laba1_AIS
         {
             InitializeComponent();
         }
-        const int quantity = 10;
+        const int quantity = 5;
         int[] massiv_in_begin = new int[quantity];
         int[] massiv_in_begin1 = new int[quantity];
         private void button1_Click(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace laba1_AIS
         private void button4_Click(object sender, EventArgs e)
         {
             //int min = massiv_in_begin[0];
-            int u;
+            //int u;
             for (int i = 1; i < quantity + 1; i++) {
                 for (int k = 0; k < quantity; k++) {
                     if (massiv_in_begin1[k] < massiv_in_begin1[i - 1])
@@ -82,7 +82,7 @@ namespace laba1_AIS
             printLab(label5, list.ToArray());
             
         }
-        public void QuickSort(List<int> list, int low, int high)
+        public void QuickSort(List<int> list, int low, int high)//не работает и вам не советует (причина: потеря элемента списка где-то внутри алгоритма)
         {
             if(high - low > 1)
             {
@@ -92,24 +92,49 @@ namespace laba1_AIS
                 int t = r.Next(low, high);
                 List<int> LowerT = new List<int>();
                 List<int> HigherT = new List<int>();
+                int el;
                 for (int i = t; i < high; i++)
                 {
+                    el = list[i];
                     if (list[t] > list[i])
                     {
-                        LowerT.Add(list[i]);
+                        LowerT.Add(el);
                     }
                     //else if (list[t] == list[i]) LowerT.Add(list[i]);
                     else 
-                        HigherT.Add(list[i]);
+                        HigherT.Add(el);
+                }
+                for (int i = t; i > low; i--)
+                {
+                    el = list[i];
+                    if (list[t] > list[i])
+                    {
+                        LowerT.Add(el);
+                    }
+                    else if (list[t] == list[i]) ;
+                    else
+                        HigherT.Add(el);
                 }
                 //LowerT.Add(list[t]);
-                for(int i = 0; i < HigherT.Count(); i++)
+                for (int i = 0; i < HigherT.Count(); i++)
                 {
                     LowerT.Add(HigherT[i]);
                 }
-                list = LowerT;
+                for(int i = 0; i < list.Count(); i++)
+                {
+                    int y = list[i];
+                }
+                list = new List<int>();
+                for (int i = 0; i < LowerT.Count(); i++)
+                {
+                    list.Add(LowerT[i]);
+                }
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    int y1 = list[i];
+                }
                 QuickSort(list, low, t - 1);
-                QuickSort(list, t + 1, high);
+                QuickSort(list, t + 1, list.Count());
                 
             }
             /*if(low < high)
@@ -146,6 +171,10 @@ namespace laba1_AIS
                     }
                 }
             }*/
+        }
+
+        public void ElectionSort(int[] x) { 
+            
         }
         public int election(List<int> A, int l, int h)
         {
