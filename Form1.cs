@@ -12,32 +12,74 @@ using System.Collections.Generic;
 
 namespace laba1_AIS
 {
-    public partial class Form1 : Form
+  public partial class Form1 : Form
+  {
+    //StreamReader sr = new StreamReader("C:\\Sample.txt");
+    public Form1()
     {
-        //StreamReader sr = new StreamReader("C:\\Sample.txt");
-        public Form1()
+      InitializeComponent();
+    }
+    int On = 0;
+    const int quantity = 100;
+    int[] massiv_in_begin = new int[quantity];
+
+    int[] massiv_in_begin1 = new int[quantity];
+    bool f = false;
+    public string pathF = "FileLaba_";
+    // string FileName + NameSort
+    // FileWrite(mass, "QuickSort")
+
+    public bool Check() {
+      if (massiv_in_begin[0] == 0) f = false;
+      else f = true;
+      return f;
+    }
+    private void button1_Click(object sender, EventArgs e)
+    {
+      string q = "";
+      label1.Text = q;
+      Random r = new Random();
+      for (int i = 0; i < quantity; i++) {
+        int y = r.Next(1, 1000);
+        massiv_in_begin[i] = y;
+        label1.Text = label1.Text + " " + Convert.ToString(y);
+        massiv_in_begin1[i] = massiv_in_begin[i];
+      }
+      f = true;
+    }
+
+    private void button2_Click(object sender, EventArgs e)
+    {
+      FileWrite(massiv_in_begin, "1");
+    }
+    const string FN = "File_";
+    public void FileWrite(int[] sorted, string fileName)
+    {
+      fileName = FN + fileName + ".txt";
+      using (var sw = new StreamWriter(fileName, false))
+      {
+        for (int i = 0; i < sorted.Length; i++)
         {
-            InitializeComponent();
+          sw.WriteLine(sorted[i].ToString());
         }
-        const int quantity = 10;
-        int[] massiv_in_begin = new int[quantity];
-        int[] massiv_in_begin1 = new int[quantity];
-        private void button1_Click(object sender, EventArgs e)
+      }
+    }
+
+        public int[] FileRead(string fileName)
         {
-            string q = "";
-            label1.Text = q;
-            Random r = new Random();
-            for (int i = 0; i < quantity; i++) {
-                int y = r.Next(1, 1000);
-                massiv_in_begin[i] = y;
-                label1.Text = label1.Text + " " + Convert.ToString(y);
-                massiv_in_begin1[i] = massiv_in_begin[i];
+            fileName = FN + fileName + ".txt";
+            int[] res = new int[quantity];
+            using(var sr = new StreamReader(fileName))
+            {
+                int i = 0;
+                while (!sr.EndOfStream)
+                {
+                    res[i] = Convert.ToInt32(sr.ReadLine());
+                  i++;
+                }
+          
             }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
+            return res;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -78,97 +120,37 @@ namespace laba1_AIS
         private void button6_Click(object sender, EventArgs e)
         {
             List<int> list = massiv_in_begin.ToList();
+            On = 0;
             QuickSort(list, 0, massiv_in_begin.Length);
             printLab(label5, list.ToArray());
-            
+            FileWrite(list.ToArray(), "3");
         }
-        public void QuickSort(List<int> list, int low, int high)
+        public void QuickSort(List<int> unsorted, int low, int high)
         {
-            if(high - low > 1)
+            int i = 0;
+            while(i < high - 1)
             {
-                int m = list.Count();
-                label6.Text = Convert.ToString(m);
-                Random r = new Random();
-                int t = r.Next(low, high);
-                List<int> LowerT = new List<int>();
-                List<int> HigherT = new List<int>();
-                for (int i = t; i < high; i++)
+                int index = i;
+                int j = i + 1;
+                while(j < high)
                 {
-                    if (list[t] > list[i])
+                    if(unsorted[index] < unsorted[j])
                     {
-                        LowerT.Add(list[i]);
+                        index = j;
                     }
-                    //else if (list[t] == list[i]) LowerT.Add(list[i]);
-                    else 
-                        HigherT.Add(list[i]);
+                    On++;//operation counter
+                    j++;
                 }
-                //LowerT.Add(list[t]);
-                for(int i = 0; i < HigherT.Count(); i++)
-                {
-                    LowerT.Add(HigherT[i]);
-                }
-                list = LowerT;
-                QuickSort(list, low, t - 1);
-                QuickSort(list, t + 1, high);
-                
+                int boof = unsorted[index];
+                unsorted[index] = unsorted[i];
+                unsorted[i] = boof;
+                //On++; //operation counter
+                i++;
             }
-            /*if(low < high)
-            {
-                int p = election(list, low, high);
-                QuickSort(list, low, p - 1);
-                QuickSort(list, p + 1, high);
-            }*/
-            /*if(high - low > 1)
-            {
-                int t;
-                if(high - low >= 3)
-                {
-                    Random r = new Random();
-                    t = r.Next(low + 1, high - 1);
-                    if(list[t + 1] < list[t] || list[t] < list[t - 1])
-                    {
-                        int b = list[t + 1];
-                        list[t + 1]
-                            = list[t - 1];
-                        list[t - 1] = b;
-                    }
-                    
-                    QuickSort(list, low, t - 1);
-                    QuickSort(list, t + 1, high);
-                }
-                else if(high - low == 2)
-                {
-                    if(list[low] > list[high]) {
-                        int b = list[low];
-                        list[low]
-                            = list[high];
-                        list[low] = b;
-                    }
-                }
-            }*/
         }
         public int election(List<int> A, int l, int h)
         {
-            /*int o;
-            int pivot = A[h];
-            int i = l;
-            for(int j = l; j < h - 1; j++)
-            {
-                if(A[j] <= pivot)
-                {
-                    o = A[i];
-                    A[i] = A[j];
-                    A[j] = o;
-                    i++;
-                }
-            }
-            o = A[i];
-            A[i] = A[h];
-            A[h] = o;*/
-
-            Random r = new Random();
-            int i = r.Next(l, h);
-            return i;
+            return l;
         }
         public void Swap(ref int element1, ref int element2)//не работает для элементов списка (нано технология дала сбой)
         {
@@ -184,6 +166,31 @@ namespace laba1_AIS
                 q = q + " " + Convert.ToString(mass[i]);
             }
             Lab.Text = q;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            //printLab(label5, FileRead("1"));
+        }
+        int[] Diff = new int[quantity];
+        private void button8_Click(object sender, EventArgs e)
+        {
+            On = 0;
+            for(int i = 0; i < quantity; i++)
+            {
+                On = 0;
+                QuickSort(massiv_in_begin.ToList(), 0, i);
+                Diff[i] = On;
+            }
+            printLab(label7, Diff);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Form F1 = new Graphik(Diff, quantity);
+            this.Hide();
+            F1.ShowDialog();
+            this.Close();
         }
     }
 }
