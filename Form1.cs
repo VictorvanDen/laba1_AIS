@@ -9,16 +9,32 @@ namespace laba1_AIS
     public partial class Form1 : Form
     {
         //StreamReader sr = new StreamReader("C:\\Sample.txt");
-        public Form1()
+        public Form1(bool b)
         {
             InitializeComponent();
+            if (b)
+            {
+                massiv_in_begin1 = FileRead("Gend");
+                massiv_in_begin = massiv_in_begin1;
+                printLab(label1, massiv_in_begin1);
+            }
+            else
+            {
+                Random r = new Random();
+                int y;
+                for (int i = 0; i < quantity1; i++)
+                {
+                    y = r.Next(1, 1000);
+                    massiv_in_begin[i] = y;
+                }
+            }
             label9.Text = Convert.ToString(quantity);
             MessageBox.Show("Перед использованием программы вы можете прочитать руководство пользователя (кнопка в правом верхнем углу окна программы с вопросительным знаком).");
         }
         int On = 0;
         const int quantity1 = 10100;
-        int quantity = 100;
-        
+        int quantity = 1000;
+
         int[] massiv_in_begin = new int[quantity1];
 
         int[] massiv_in_begin1 = new int[quantity1];
@@ -26,26 +42,23 @@ namespace laba1_AIS
         public string pathF = "FileLaba_";
         // string FileName + NameSort
         // FileWrite(mass, "QuickSort")
-
-        public bool Check()
+        public void Gend(ref int[] mass, int q)
         {
-            if (massiv_in_begin[0] == 0) f = false;
-            else f = true;
-            return f;
+            Random r = new Random();
+            for (int i = 0; i < q; i++)
+            {
+                mass[i] = r.Next(1, 1000);
+            }
         }
         private void button1_Click(object sender, EventArgs e)
         {
             string q = "";
             label1.Text = q;
-            Random r = new Random();
-            for (int i = 0; i < quantity; i++)
-            {
-                int y = r.Next(1, 1000);
-                massiv_in_begin[i] = y;
-                label1.Text = label1.Text + " " + Convert.ToString(y);
-                massiv_in_begin1[i] = massiv_in_begin[i];
-            }
+            Gend(ref massiv_in_begin, quantity);
+            massiv_in_begin1 = massiv_in_begin;
+            printLab(label1, massiv_in_begin);
             f = true;
+            FileWrite(massiv_in_begin, "Gend");
         }
         public void Vstavki(ref int[] array, int l)
         {
@@ -97,11 +110,11 @@ namespace laba1_AIS
             }
             return res;
         }
-        public void SortP(ref int[] unsorted)
+        public void SortP(ref int[] unsorted, int quant)
         {
-            for (int i = 1; i < quantity + 1; i++)
+            for (int i = 1; i < quant + 1; i++)
             {
-                for (int k = 0; k < quantity; k++)
+                for (int k = 0; k < quant; k++)
                 {
                     if (unsorted[k] < unsorted[i - 1])
                     {
@@ -131,7 +144,7 @@ namespace laba1_AIS
                     }
                 }
             }*/
-            SortP(ref massiv_in_begin1);
+            SortP(ref massiv_in_begin1, quantity);
             printLab(label3, massiv_in_begin1);
             FileWrite(massiv_in_begin1, "SortP");
             /*string q = "";
@@ -236,27 +249,33 @@ namespace laba1_AIS
         }
         int[] Diff = new int[quantity1];
         int[] Diff1 = new int[quantity1];
+        int[] Diff3 = new int[quantity1];
         private void button8_Click(object sender, EventArgs e)
         {
-            
+
             On = 0;
             //if (massiv_in_begin[0] == 0) MessageBox.Show("Вы сразу можете посмотреть график сложности алгоритма, нажав на кнопку ниже");
             //else
             //{
-                for (int i = 0; i < quantity; i++)
-                {
-                    int[] test_mass = new int[quantity1];
-                    test_mass = massiv_in_begin;
-                    On = 0;
-                    QuickSort(massiv_in_begin.ToList(), 0, i);
-                    Diff[i] = On;
-                    On = 0;
-                    Vstavki(ref test_mass, i);
-                    Diff1[i] = On;
-                }
-                printLab(label7, Diff);
-                FileWrite(Diff, "Diff");
-                FileWrite(Diff1, "Diff1");
+            for (int i = 0; i < quantity; i++)
+            {
+                int[] test_mass = new int[quantity1];
+                test_mass = massiv_in_begin;
+                On = 0;
+                QuickSort(massiv_in_begin.ToList(), 0, i);
+                Diff[i] = On;
+                On = 0;
+                Vstavki(ref test_mass, i);
+                Diff1[i] = On;
+                test_mass = massiv_in_begin;
+                On = 0;
+                SortP(ref test_mass, i);
+                Diff3[i] = On;
+            }
+            printLab(label7, Diff);
+            FileWrite(Diff, "Diff");
+            FileWrite(Diff1, "Diff1");
+            FileWrite(Diff3, "Diff3");
             //}
         }
 
@@ -264,7 +283,8 @@ namespace laba1_AIS
         {
             Diff = FileRead("Diff");
             Diff1 = FileRead("Diff1");
-            Form F1 = new Graphik(Diff, Diff1, quantity);
+            Diff3 = FileRead("Diff3");
+            Form F1 = new Graphik(Diff, Diff1, Diff3, quantity);
             this.Hide();
             F1.ShowDialog();
             this.Close();
@@ -286,7 +306,20 @@ namespace laba1_AIS
 
         private void button10_Click(object sender, EventArgs e)
         {
+            printLab(label12, FileRead("3"));
+        }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            printLab(label11, FileRead("Vst"));
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Form F1 = new Gid();
+            this.Hide();
+            F1.ShowDialog();
+            this.Close();
         }
     }
 }
