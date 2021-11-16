@@ -22,6 +22,44 @@ namespace laba1_AIS
         const int quantity = 5;
         int[] massiv_in_begin = new int[quantity];
         int[] massiv_in_begin1 = new int[quantity];
+            if (b)
+            {
+                massiv_in_begin1 = FileRead("Gend");
+                massiv_in_begin = massiv_in_begin1;
+                printLab(label1, massiv_in_begin1);
+            }
+            else
+            {
+                Random r = new Random();
+                int y;
+                for (int i = 0; i < quantity1; i++)
+                {
+                    y = r.Next(1, 1000);
+                    massiv_in_begin[i] = y;
+                }
+            }
+            label9.Text = Convert.ToString(quantity);
+            MessageBox.Show("Перед использованием программы вы можете прочитать руководство пользователя (кнопка в правом верхнем углу окна программы с вопросительным знаком).");
+        }
+        int On = 0;
+        const int quantity1 = 10100;
+        int quantity = 1000;
+
+        int[] massiv_in_begin = new int[quantity1];
+
+        int[] massiv_in_begin1 = new int[quantity1];
+        bool f = false;
+        public string pathF = "FileLaba_";
+        // string FileName + NameSort
+        // FileWrite(mass, "QuickSort")
+        public void Gend(ref int[] mass, int q)
+        {
+            Random r = new Random();
+            for (int i = 0; i < q; i++)
+            {
+                mass[i] = r.Next(1, 1000);
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             string q = "";
@@ -45,6 +83,7 @@ namespace laba1_AIS
             //int min = massiv_in_begin[0];
             //int u;
             for (int i = 1; i < quantity + 1; i++) {
+            /*for (int i = 1; i < quantity + 1; i++) {
                 for (int k = 0; k < quantity; k++) {
                     if (massiv_in_begin1[k] < massiv_in_begin1[i - 1])
                     {
@@ -82,99 +121,51 @@ namespace laba1_AIS
             printLab(label5, list.ToArray());
             
         }
-        public void QuickSort(List<int> list, int low, int high)//не работает и вам не советует (причина: потеря элемента списка где-то внутри алгоритма)
+        public void QuickSort(List<int> unsorted, int low, int high)
         {
             if(high - low > 1)
             {
-                int m = list.Count();
-                label6.Text = Convert.ToString(m);
-                Random r = new Random();
-                int t = r.Next(low, high);
-                List<int> LowerT = new List<int>();
-                List<int> HigherT = new List<int>();
-                int el;
-                for (int i = t; i < high; i++)
-                {
-                    el = list[i];
-                    if (list[t] > list[i])
-                    {
-                        LowerT.Add(el);
-                    }
-                    //else if (list[t] == list[i]) LowerT.Add(list[i]);
-                    else 
-                        HigherT.Add(el);
-                }
-                for (int i = t; i > low; i--)
-                {
-                    el = list[i];
-                    if (list[t] > list[i])
-                    {
-                        LowerT.Add(el);
-                    }
-                    else if (list[t] == list[i]) ;
-                    else
-                        HigherT.Add(el);
-                }
-                //LowerT.Add(list[t]);
-                for (int i = 0; i < HigherT.Count(); i++)
-                {
-                    LowerT.Add(HigherT[i]);
-                }
-                for(int i = 0; i < list.Count(); i++)
-                {
-                    int y = list[i];
-                }
-                list = new List<int>();
-                for (int i = 0; i < LowerT.Count(); i++)
-                {
-                    list.Add(LowerT[i]);
-                }
-                for (int i = 0; i < list.Count(); i++)
-                {
-                    int y1 = list[i];
-                }
-                QuickSort(list, low, t - 1);
-                QuickSort(list, t + 1, list.Count());
-                
-            }
-            /*if(low < high)
-            {
-                int p = election(list, low, high);
-                QuickSort(list, low, p - 1);
-                QuickSort(list, p + 1, high);
-            }*/
-            /*if(high - low > 1)
-            {
-                int t;
-                if(high - low >= 3)
+                int index = i;
+                int j = i + 1;
+                while (j < high)
                 {
                     Random r = new Random();
                     t = r.Next(low + 1, high - 1);
                     if(list[t + 1] < list[t] || list[t] < list[t - 1])
                     {
-                        int b = list[t + 1];
-                        list[t + 1]
-                            = list[t - 1];
-                        list[t - 1] = b;
+                        index = j;
                     }
-                    
-                    QuickSort(list, low, t - 1);
-                    QuickSort(list, t + 1, high);
+                    On++;//operation counter
+                    j++;
                 }
-                else if(high - low == 2)
+                int boof = unsorted[index];
+                unsorted[index] = unsorted[i];
+                unsorted[i] = boof;
+                //On++; //operation counter
+                i++;
+            }
+            i = y;
+            y = low;
+            Swap(ref i, ref y);
+            while (i > y - 1)
+            {
+                int index = i;
+                int j = i + 1;
+                while (j < y)
                 {
-                    if(list[low] > list[high]) {
-                        int b = list[low];
-                        list[low]
-                            = list[high];
-                        list[low] = b;
+                    if (unsorted[index] < unsorted[j])
+                    {
+                        index = j;
                     }
+                    On++;//operation counter
+                    j++;
                 }
-            }*/
-        }
-
-        public void ElectionSort(int[] x) { 
-            
+                int boof = unsorted[index];
+                unsorted[index] = unsorted[i];
+                unsorted[i] = boof;
+                //On++; //operation counter
+                i--;
+            }
         }
         public int election(List<int> A, int l, int h)
         {
