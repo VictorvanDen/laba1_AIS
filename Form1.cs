@@ -33,7 +33,7 @@ namespace laba1_AIS
         }
         int On = 0;
         const int quantity1 = 10100;
-        int quantity = 1000;
+        int quantity = 20;
 
         int[] massiv_in_begin = new int[quantity1];
 
@@ -171,61 +171,43 @@ namespace laba1_AIS
         private void button6_Click(object sender, EventArgs e)
         {
             List<int> list = massiv_in_begin.ToList();
+            int[] mas = massiv_in_begin;
             On = 0;
-            QuickSort(list, 0, massiv_in_begin.Length);
-            printLab(label5, list.ToArray());
-            FileWrite(list.ToArray(), "3");
+            QuickSort(mas, 0, quantity);
+            printLab(label5, mas);
+            FileWrite(mas, "3");
         }
-        public void QuickSort(List<int> unsorted, int low, int high)
+        static int Partition(int[] array, int minIndex, int maxIndex)
         {
-            Random r = new Random();
-            int i = r.Next(low, high);
-            int y = i;
-            while (i < high - 1)
+            var m = new Form1(false);
+            var pivot = minIndex - 1;
+            for (var i = minIndex; i < maxIndex; i++)
             {
-                int index = i;
-                int j = i + 1;
-                while (j < high)
+                if (array[i] < array[maxIndex])
                 {
-                    if (unsorted[index] < unsorted[j])
-                    {
-                        index = j;
-                    }
-                    On++;//operation counter
-                    j++;
+                    pivot++;
+                    m.Swap(ref array[pivot], ref array[i]);
                 }
-                int boof = unsorted[index];
-                unsorted[index] = unsorted[i];
-                unsorted[i] = boof;
-                //On++; //operation counter
-                i++;
             }
-            i = y;
-            y = low;
-            Swap(ref i, ref y);
-            while (i > y - 1)
-            {
-                int index = i;
-                int j = i + 1;
-                while (j < y)
-                {
-                    if (unsorted[index] < unsorted[j])
-                    {
-                        index = j;
-                    }
-                    On++;//operation counter
-                    j++;
-                }
-                int boof = unsorted[index];
-                unsorted[index] = unsorted[i];
-                unsorted[i] = boof;
-                //On++; //operation counter
-                i--;
-            }
+
+            pivot++;
+            m.Swap(ref array[pivot], ref array[maxIndex]);
+            return pivot;
         }
-        public int election(List<int> A, int l, int h)
+
+        //быстрая сортировка
+        static int[] QuickSort(int[] array, int minIndex, int maxIndex)
         {
-            return l;
+            if (minIndex >= maxIndex)
+            {
+                return array;
+            }
+
+            var pivotIndex = Partition(array, minIndex, maxIndex);
+            QuickSort(array, minIndex, pivotIndex - 1);
+            QuickSort(array, pivotIndex + 1, maxIndex);
+
+            return array;
         }
         public void Swap(ref int element1, ref int element2)//не работает для элементов списка (нано технология дала сбой)
         {
@@ -262,7 +244,7 @@ namespace laba1_AIS
                 int[] test_mass = new int[quantity1];
                 test_mass = massiv_in_begin;
                 On = 0;
-                QuickSort(massiv_in_begin.ToList(), 0, i);
+                QuickSort(test_mass, 0, i);
                 Diff[i] = On;
                 On = 0;
                 Vstavki(ref test_mass, i);
