@@ -28,13 +28,18 @@ namespace laba1_AIS
                     massiv_in_begin[i] = y;
                 }
             }
+            for (int i = 0; i < quantity1; i++)
+            {
+                cou[i] = i;
+            }
             label9.Text = Convert.ToString(quantity);
-            MessageBox.Show("Перед использованием программы вы можете прочитать руководство пользователя (кнопка в правом верхнем углу окна программы с вопросительным знаком).");
+            //MessageBox.Show("Перед использованием программы вы можете прочитать руководство пользователя (кнопка в правом верхнем углу окна программы с вопросительным знаком).");
         }
         int On = 0;
         const int quantity1 = 10100;
-        int quantity = 20;
-
+        int quantity = 100;
+        int[] cou = new int[quantity1];
+        
         int[] massiv_in_begin = new int[quantity1];
 
         int[] massiv_in_begin1 = new int[quantity1];
@@ -75,11 +80,21 @@ namespace laba1_AIS
                 Swap(ref array[startIndex], ref array[smallestIndex]);
             }
         }
+        public void Kostyl()
+        {
+            MessageBox.Show("Отдельные кнопки для каждой сортировки были отключены, теперь сразу считается сложность для всех сортировок и вывод вектора значений, без вывода отсортированного массива.");
+            object sender = new object();
+            EventArgs e = new EventArgs();
+            button8_Click(sender, e);
+        }
         private void button2_Click(object sender, EventArgs e)
         {
-            Vstavki(ref massiv_in_begin1, quantity);
-            printLab(label2, massiv_in_begin1);
-            FileWrite(massiv_in_begin1, "Vst");
+            //Vstavki(ref massiv_in_begin1, quantity);
+            //printLab(label2, massiv_in_begin1);
+            //printLab(label13, cou);
+            //FileWrite(massiv_in_begin1, "Vst");
+            Kostyl();
+
         }
         const string FN = "File_";
         public void FileWrite(int[] sorted, string fileName)
@@ -130,7 +145,7 @@ namespace laba1_AIS
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            On = 0;
+            //On = 0;
             //int min = massiv_in_begin[0];
             /*for (int i = 1; i < quantity + 1; i++) {
                 for (int k = 0; k < quantity; k++) {
@@ -144,16 +159,16 @@ namespace laba1_AIS
                     }
                 }
             }*/
-            SortP(ref massiv_in_begin1, quantity);
-            printLab(label3, massiv_in_begin1);
-            FileWrite(massiv_in_begin1, "SortP");
+            //SortP(ref massiv_in_begin1, quantity);
+            //printLab(label3, massiv_in_begin1);
+            //FileWrite(massiv_in_begin1, "SortP");
             /*string q = "";
             for(int i = 0; i < quantity; i++)
             {
                 q = q + " " + Convert.ToString(massiv_in_begin1[i]);
             }
             label3.Text = q;*/
-
+            Kostyl();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -170,34 +185,36 @@ namespace laba1_AIS
 
         private void button6_Click(object sender, EventArgs e)
         {
-            List<int> list = massiv_in_begin.ToList();
-            int[] mas = massiv_in_begin;
-            On = 0;
-            QuickSort(mas, 0, quantity);
-            printLab(label5, mas);
-            FileWrite(mas, "3");
+            //List<int> list = massiv_in_begin.ToList();
+            //int[] mas = massiv_in_begin;
+            //On = 0;
+            //mas = QuickSort(mas, 0, quantity);
+            //printLab(label5, mas);
+            //FileWrite(mas, "3");
+            Kostyl();
         }
-        static int Partition(int[] array, int minIndex, int maxIndex)
+        public int Partition(int[] array, int minIndex, int maxIndex)
         {
-            var m = new Form1(false);
             var pivot = minIndex - 1;
             for (var i = minIndex; i < maxIndex; i++)
             {
                 if (array[i] < array[maxIndex])
                 {
+                    On++;
                     pivot++;
-                    m.Swap(ref array[pivot], ref array[i]);
+                    Swap(ref array[pivot], ref array[i]);
                 }
             }
 
             pivot++;
-            m.Swap(ref array[pivot], ref array[maxIndex]);
+            Swap(ref array[pivot], ref array[maxIndex]);
             return pivot;
         }
 
         //быстрая сортировка
-        static int[] QuickSort(int[] array, int minIndex, int maxIndex)
+        public int[] QuickSort(int[] array, int minIndex, int maxIndex)
         {
+            On++;
             if (minIndex >= maxIndex)
             {
                 return array;
@@ -215,12 +232,15 @@ namespace laba1_AIS
             element1 = element2;
             element2 = boof;
         }
-        public void printLab(Label Lab, int[] mass)
+        public void printLab(Label Lab, int[] mass, int qu = 50, int d = 7)
         {
             string q = "";
-            for (int i = 0; i < quantity; i++)
+            string b;
+            for (int i = 0; i < qu; i++)
             {
-                q = q + " " + Convert.ToString(mass[i]);
+                b = Convert.ToString(mass[i]);
+                if(b.Length + 1 < d) { for(int k = 0; k < d - b.Length; i++) { b += " "; } }
+                q = q + " " + b;
             }
             Lab.Text = q;
         }
@@ -234,7 +254,9 @@ namespace laba1_AIS
         int[] Diff3 = new int[quantity1];
         private void button8_Click(object sender, EventArgs e)
         {
-
+            printLab(label3, cou);
+            printLab(label2, cou);
+            printLab(label5, cou);
             On = 0;
             //if (massiv_in_begin[0] == 0) MessageBox.Show("Вы сразу можете посмотреть график сложности алгоритма, нажав на кнопку ниже");
             //else
@@ -256,6 +278,9 @@ namespace laba1_AIS
             }
             printLab(label7, Diff);
             FileWrite(Diff, "Diff");
+            printLab(label16, Diff);
+            printLab(label14, Diff1);
+            printLab(label15, Diff3);
             FileWrite(Diff1, "Diff1");
             FileWrite(Diff3, "Diff3");
             //}
@@ -298,10 +323,12 @@ namespace laba1_AIS
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            Form F1 = new Gid();
-            this.Hide();
-            F1.ShowDialog();
-            this.Close();
+            //Form F1 = new Gid();
+            //this.Hide();
+            //F1.ShowDialog();
+            //this.Close();
+            Kostyl();
+            MessageBox.Show("Руководство устарело");
         }
     }
 }
